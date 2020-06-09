@@ -1,0 +1,2 @@
+B_6101_1_AY835434               TRUE
+B_TRO_11_AY835445               FALSE

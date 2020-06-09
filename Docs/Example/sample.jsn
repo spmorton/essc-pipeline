@@ -1,0 +1,37 @@
+{
+    "Global":{
+        "mdrunThreads":"4",
+        "OMPThreads":"4",
+        "asyncThreads":"4",
+        "SeqThreads":"4",
+        "CompressData":"1",
+        "ZFPMaxError":"1e-1",
+        "tempDir":"/some/temp/location",
+        "antibody":"1",
+        "ABmode":"0",
+        "limitAPBS":"10",
+        "multiChain":"1",
+        "socketsPerNode":"1",
+        "physicalCores":"4",
+        "SMT-HT":"2",
+        "GMX-Margin":"2",
+        "doRAnalysis":"0"
+    },
+
+    "Studies":{
+        "bulk_mode":{
+            "studyName":"Antibody Binding Energies"
+            "wdir":"/home/scott/studies/AB-Study",
+            "models":"3",
+            "boundTarget":"1RZK-bound.pdb",
+            "unboundTarget":"1RZK-unbound.pdb",
+            "boundABTarget":"B12-bound.pdb",
+            "unboundABTarget":"B12-unbound.pdb",
+            "cgridsubsetFile":"pH-conc-grid-subset.txt",
+            "dockedTarget":"3BNC117-docked_Target.pdb",
+            "gp120salign":"3BNC117-docked_fit_prealign_G.pdb",
+            "ABsalign":"3BNC117-docked_fit_prealign_LH.pdb"
+         }
+    }
+}
+

@@ -76,16 +76,9 @@ import modeller.automodel
 from modeller import *
 import psize
 
-#TODO - Test protocol change to add solvation to complex structure first and then bind the two 
-#       structures together, test on a small scale to see if it is worth the extra compute
-#TODO - utilize gzip for residue .sas files
-#TODO - bring more operation in from the driver, basically the driver should just pass the work unit into the lib
-#TODO - Make argument lists to functions consitent in format and method
-#TODO - ??? write drivers in C (lose a lot of flexibility in changes for incremental runs)
-#TODO - ??? use C data types
 
 def Version():
-    return '1.1.6 libessc.py'
+    return '1.1.7 libessc.py'
 
 def printInfo():
     print ('\n\nThis is the %s\nlibessc - pipeline version: %s\nWritten by: %s \
@@ -923,6 +916,7 @@ def GetLanguage():
 
 #TODO FIX THIS FOR NEW METHOD
 def Get_New_Model(recList,tag):
+    return
     index = recList[0]
     frodanDir = recList[1]
     boundTarget = recList[2]
@@ -1614,7 +1608,7 @@ def RunFrodaN(index,seq,state,tag):
             if (multifrodan('model.pdb', bTarget)):
                 print 'unrecoverable error in frodan, creating new model'
                 recList = copy.copy(argsList)
-                Get_New_Model(recList,tag)
+                # Get_New_Model(recList,tag)
                 _SetWD(frodanDir)
                 if (multifrodan('model.pdb', bTarget)):
                     raise Exception('unrecoverable error in frodan',frodanDir)
@@ -1647,7 +1641,7 @@ def RunFrodaN(index,seq,state,tag):
             if(multifrodan('model.pdb', ubTarget)):
                 print 'unrecoverable error in frodan, creating new model'
                 recList = copy.copy(argsList)
-                Get_New_Model(recList,tag)
+                # Get_New_Model(recList,tag)
                 _SetWD(frodanDir)
                 if(multifrodan('model.pdb', ubTarget)):
                     raise Exception('unrecoverable error in frodan',frodanDir)
@@ -1680,7 +1674,7 @@ def RunFrodaN(index,seq,state,tag):
     for file in glob('frodan*'):
         _Remove(file)
     myfiles = ['#confout.gro.1#','#mdout.mdp.1#','conf.box.gro','confout.gro','md.log',\
-                'ener.edr','traj.trr','#topol.tpr.1#','tmp.pdb','align_sep_fit.pdb',\
+                'traj.trr','#topol.tpr.1#','tmp.pdb','align_sep_fit.pdb',\
                 'mdout.mdp','topol.tpr','align_sep_tmp.ali','align_sep_tmp.pap']
     for thisFile in myfiles:
         if (_Exists(thisFile)):
@@ -1694,10 +1688,10 @@ def Run_Modeller(seq,tag):
     startingModel = 1
     _SetWD(modellerDir)
     pdbs = glob('ESSC.*.pdb')
-    if(len(pdbs) == numModels):
+    if(len(pdbs) >= numModels):
         return
     else:
-        startingModel = numModels - len(pdbs)
+        startingModel = startingModel + len(pdbs)
     if tag == 0:
         for fileName in glob('../../../templates/template?.pdb'):
             _Link(fileName,fileName.split('/')[-1])
@@ -1709,7 +1703,7 @@ def Run_Modeller(seq,tag):
     print 'Modeller is running at: %s' % (modellerDir)
     #homomodel(numModels)
     hmodel = homomodel.replace('++!!SART_MODEL_NUM!!++',str(startingModel))
-    hmodel = homomodel.replace('++!!NUM_MODELS!!++',str(numModels))
+    hmodel = hmodel.replace('++!!NUM_MODELS!!++',str(numModels))
     thisFile = open('homomodel.py','w')
     thisFile.write(hmodel)
     thisFile.flush()
